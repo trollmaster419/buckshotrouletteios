@@ -1,0 +1,65 @@
+name: iOS Sideload Build
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # This allows you to run it manually from the Actions 
+tab
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      # 1. Checkout the code and FORCE LFS to download the big binaries
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          lfs: true 
+
+      # 2. Install Git LFS (Just to be safe)
+      - name: Install Git LFS
+        run: git lfs install
+
+      # 3. Build the project without signing
+      # We use CODE_SIGNING_ALLOWED=NO because Sideloadly/AltStore signs 
+it later.
+      - name: Build Project
+        run: |
+          xcodebuild -project BuckshotRoulette.xcodeproj \
+                     -scheme BuckshotRoulette \
+                     -sdk iphoneos \
+                     -configuration Release \
+                     -destination 'generic/platform=ios' \
+                     CODE_SIGNING_ALLOWED=NO \
+                     CODE_SIGNING_REQUIRED=NO \
+                     build
+
+      # 4. Package the .app into a .ipa
+      - name: Create IPA
+        run: |
+          # This finds the .app folder wherever xcodebuild put it
+          APP_PATH=$(find . -name "BuckshotRoulette.app" -type d | head -n 
+1)
+          echo "Found app bundle at: $APP_PATH"
+          
+          if [ -z "$APP_PATH" ]; then
+            echo "Error: Could not find the .app bundle. Build may have 
+failed."
+            exit 1
+          fi
+          
+          # Create the standard iOS Payload structure
+          mkdir -p Payload
+          cp -R "$APP_PATH" Payload/
+          
+          # Zip it up and rename to .ipa
+          zip -r BuckshotRoulette.ipa Payload
+          rm -rf Payload
+
+      # 5. Upload the final IPA as a downloadable artifact
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: BuckshotRoulette-IPA
+          path: BuckshotRoulette.ipa

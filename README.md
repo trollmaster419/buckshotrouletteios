@@ -6,10 +6,10 @@ This is just the Xcode project of the game.
 - Got rid of Steamworks integration one and replaced it with a mock script
 - Pretty much all
 ## Bugs
-- No keys can be pressed, so you cant go thru the end screen
-- Mouse compatibility (mouse gets pressed at the prev click)
-- Not everything is hidden (blood splatter, item interaction debug, shoot selection, etc)
-- UI at the wrong place 
+- No keys can be pressed, so you cant go through the end screen
+- Mouse compatibility (mouse gets clicked at the previous press)
+- Not everything is hidden (blood splatter, item interaction debug, etc)
+- UI shifted to the wrong place
 ## Why?
 Just because I have an iPhone, yet I couldnt play most computer games, so I decided to make a challenge for myself.
 Its also because the existing ports are either private or require a niche signing software and for you to sell your soul to the Apple gods

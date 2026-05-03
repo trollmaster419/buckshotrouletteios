@@ -12,7 +12,7 @@ This is just the Xcode project of the game.
 - UI shifted to the wrong place
 ## Why?
 Just because I have an iPhone, yet I couldnt play most computer games, so I decided to make a challenge for myself.
-Its also because the existing ports are either private or require a niche signing software and for you to sell your soul to the Apple gods
+Its also because the existing ports are either private or require a niche signing software and for you to sell your soul to the Apple gods.
 And why not?
 ## How do I install?
 Go to Actions, latest build, then scroll down to the Artifacts and get the .zip file.
